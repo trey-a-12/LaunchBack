@@ -80,8 +80,10 @@ struct AdvancedSettingsView: View {
             Text("Advanced Settings")
                 .font(.headline)
             Toggle("Verbose Logging", isOn: .constant(false))
+            Button("Reset All Settings") {
+                // Implement reset logic here
             }
         }
-
+        .padding()
     }
-
+}

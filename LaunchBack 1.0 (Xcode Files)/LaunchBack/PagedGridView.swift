@@ -67,16 +67,19 @@ struct PagedGridView: View {
                 // 🔍 Search bar
                 HStack {
                     Spacer()
-                    AutoFocusSearchField(text: $searchText)
-                        .background()
-                        .frame(width: 250, height: 30)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 5)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 14)
-                                .stroke(Color.white.opacity(0.3), lineWidth: 1)
-                        )
-                        .shadow(color: Color.black.opacity(0.4), radius: 5, x: 0, y: 2)
+                    ZStack {
+                        VisualEffectView(material: .sidebar, blendingMode: .withinWindow) // <-- Fixed here
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                            .shadow(color: Color.black.opacity(0.25), radius: 8, x: 0, y: 1)
+                        AutoFocusSearchField(text: $searchText)
+                            .frame(width: 250, height: 30)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 5)
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    }
+                    .frame(width: 250, height: 30)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 5)
                     Spacer()
                 }
                 .padding(.top, 40)
@@ -232,3 +235,4 @@ struct AppIconView: View {
         .frame(height: 110)
     }
 }
+

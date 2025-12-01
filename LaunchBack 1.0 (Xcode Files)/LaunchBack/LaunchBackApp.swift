@@ -50,41 +50,25 @@ struct LaunchpadGlassApp: App {
     }
 
     static func loadApps() -> [AppInfo] {
-        let appPaths = ["/Applications", "/System/Applications", "/Users/~/Applications"]
+        let appPaths = ["/Applications", "/System/Applications"]
         var foundApps: [AppInfo] = []
 
         for basePath in appPaths {
             guard let contents = try? FileManager.default.contentsOfDirectory(atPath: basePath) else { continue }
 
-            for item in contents where item.hasSuffix(".app",) {
+            for item in contents where item.hasSuffix(".app") {
                 let fullPath = basePath + "/" + item
                 let appName = item.replacingOccurrences(of: ".app", with: "")
                 let icon = NSWorkspace.shared.icon(forFile: fullPath)
                 icon.size = NSSize(width: 64, height: 64)
                 let category = categorizeApp(at: fullPath)
                 foundApps.append(AppInfo(name: appName, icon: icon, path: fullPath, category: category))
-                
-                
             }
         }
 
         return foundApps.sorted { $0.name.lowercased() < $1.name.lowercased() }
     }
 
-    static func categorizeApp(name: String) -> String {
-        let categories: [String: String] = [
-            "Safari": "Internet",
-            "Mail": "Internet",
-            "FaceTime": "Internet",
-            "Terminal": "Utilities",
-            "System Settings": "System",
-            "Preview": "Utilities",
-            "Photos": "Creative",
-            "GarageBand": "Creative",
-            "Final Cut Pro": "Creative",
-            "Photo Booth": "Creative"
-        ]
-        return categories[name] ?? "Utilities"
     static func categorizeApp(at path: String) -> String {
         guard
             let bundle = Bundle(path: path),
